@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
-import uniqid from 'uniqid'
 import { saveBook } from '../Firebase';
 import { firestore } from '../firebase-config';
-import { collection, getDocs, query, onSnapshot, connectFirestoreEmulator } from 'firebase/firestore'
+import { collection, query, onSnapshot } from 'firebase/firestore'
 
 const LibraryContext = React.createContext();
 const LibraryUpdateContext = React.createContext();
