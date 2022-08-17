@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import uniqid from 'uniqid'
 import { saveBook } from '../Firebase';
 import { firestore } from '../firebase-config';
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, onSnapshot, connectFirestoreEmulator } from 'firebase/firestore'
 
 const LibraryContext = React.createContext();
 const LibraryUpdateContext = React.createContext();
@@ -22,8 +22,15 @@ export function LibraryProvider({ children }) {
         const getLibrary = async () => {
             try {
                 const libraryCol = collection(firestore, 'library');
-                const librarySnapshot = await getDocs(libraryCol);
-                setLibrary(librarySnapshot.docs.map(doc => ({...doc.data(), id: doc.id})));
+                const q = query(libraryCol);
+                
+                const libraryChange = onSnapshot(q, (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if(change.type === 'added') {
+                            setLibrary((prevLibrary) => [...prevLibrary, ({...change.doc.data(), id: change.doc.id})]);
+                        }
+                    })
+                });
             } catch (error) {
                 console.error('Could not retrieve data from Firestore database', error);
             }}

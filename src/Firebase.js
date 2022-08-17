@@ -10,6 +10,7 @@ export async function saveBook(db, title, author, pages, status) {
             status: status,
             timestamp: serverTimestamp()
         })
+        console.log('Wrote to database');
     } catch (error) {
         console.error('Error writing new book to Firebase Database', error);
     }
