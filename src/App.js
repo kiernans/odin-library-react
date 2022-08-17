@@ -1,10 +1,11 @@
 import Library from "./components/Library";
+import { LibraryProvider } from "./components/LibraryProvider";
 
 function App() {
   return (
-    <div className="App">
+    <LibraryProvider>
       <Library />
-    </div>
+    </LibraryProvider>
   );
 }
 
